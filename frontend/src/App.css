@@ -151,3 +151,67 @@ h1 {
   color: white;
   border-color: #4f46e5;
 }
+
+/* スマホ向けのレイアウト調整（画面幅600px以下） */
+@media (max-width: 600px) {
+  .app {
+    padding: 16px 12px;
+  }
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .memo-form {
+    padding: 12px;
+  }
+
+  .memo-form input,
+  .memo-form textarea {
+    font-size: 16px;
+    /* スマホでズームされないよう16px以上にする */
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .memo-item {
+    padding: 12px;
+  }
+
+  .memo-actions {
+    flex-direction: column;
+  }
+
+  .memo-actions .btn {
+    width: 100%;
+  }
+
+  .sort-buttons {
+    flex-wrap: wrap;
+  }
+
+  .btn-sort {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* さらに小さい画面（320px〜400px程度のスマホ）向け */
+@media (max-width: 400px) {
+  .app {
+    padding: 12px 8px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+}
