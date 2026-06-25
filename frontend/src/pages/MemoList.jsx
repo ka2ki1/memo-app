@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
-const CATEGORIES = ['その他', '仕事', 'プライベート', '学習']
+import { CATEGORIES } from '../constants'
+import { getMemos, deleteMemo } from '../api/memos'
 
 function MemoList() {
   const [memos, setMemos] = useState([])
@@ -11,12 +11,10 @@ function MemoList() {
   const [filterCategory, setFilterCategory] = useState('すべて')
 
   const fetchMemos = () => {
-    fetch('http://localhost/api/memos')
-      .then(res => res.json())
-      .then(data => {
-        setMemos(data)
-        setLoading(false)
-      })
+    getMemos().then(data => {
+      setMemos(data)
+      setLoading(false)
+    })
   }
 
   useEffect(() => {
@@ -24,14 +22,11 @@ function MemoList() {
   }, [])
 
   const handleDelete = (id) => {
-    fetch(`http://localhost/api/memos/${id}`, {
-      method: 'DELETE',
-    }).then(() => {
+    deleteMemo(id).then(() => {
       fetchMemos()
     })
   }
 
-  // 検索 → カテゴリ絞り込み → 並び替え
   const searchedMemos = memos.filter(memo =>
     memo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (memo.content && memo.content.toLowerCase().includes(searchTerm.toLowerCase()))

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-
-const CATEGORIES = ['その他', '仕事', 'プライベート', '学習']
+import { CATEGORIES } from '../constants'
+import { getMemo, updateMemo, deleteMemo } from '../api/memos'
 
 function MemoDetail() {
   const { id } = useParams()
@@ -13,33 +13,25 @@ function MemoDetail() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`http://localhost/api/memos/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        setTitle(data.title)
-        setContent(data.content || '')
-        setCategory(data.category || 'その他')
-        setLoading(false)
-      })
+    getMemo(id).then(data => {
+      setTitle(data.title)
+      setContent(data.content || '')
+      setCategory(data.category || 'その他')
+      setLoading(false)
+    })
   }, [id])
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    fetch(`http://localhost/api/memos/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, category }),
-    }).then(() => {
-      navigate('/') // 更新後は一覧ページに戻る
+    updateMemo(id, { title, content, category }).then(() => {
+      navigate('/')
     })
   }
 
   const handleDelete = () => {
-    fetch(`http://localhost/api/memos/${id}`, {
-      method: 'DELETE',
-    }).then(() => {
-      navigate('/') // 削除後は一覧ページに戻る
+    deleteMemo(id).then(() => {
+      navigate('/')
     })
   }
 
