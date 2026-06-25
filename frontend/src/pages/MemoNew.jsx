@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-
-const CATEGORIES = ['その他', '仕事', 'プライベート', '学習']
+import { CATEGORIES } from '../constants'
+import { createMemo } from '../api/memos'
 
 function MemoNew() {
   const [title, setTitle] = useState('')
@@ -12,15 +12,9 @@ function MemoNew() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    fetch('http://localhost/api/memos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, category }),
+    createMemo({ title, content, category }).then(() => {
+      navigate('/')
     })
-      .then(res => res.json())
-      .then(() => {
-        navigate('/') // 作成後は一覧ページに戻る
-      })
   }
 
   return (
